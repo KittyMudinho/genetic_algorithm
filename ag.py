@@ -2,8 +2,9 @@ import numpy as np
 import random
 import matplotlib.pyplot as plt
 
-errors=[]
-QUOTE='GUSTAVO'
+errors_best=[]
+errors_worst=[]
+QUOTE='GATO'
 TAM_CROMO=len(QUOTE)
 TAM_POP=TAM_CROMO*16
 taxa_melhor=int(TAM_POP*0.10)
@@ -71,7 +72,7 @@ def elitismo(val_quote,best):
         if i in piores:
             pop_init[i]=best[pos]
 
-def mutacao(taxa=0.1):
+def mutacao(taxa=0.03):
     global pop_init, TAM_POP, TAM_CROMO
     for i in range(TAM_POP):
         for j in range(TAM_CROMO):
@@ -83,13 +84,15 @@ def printar_pop():
     print(pop_init)
 
 def print_best(val_quote):
-    global pop_init,errors
+    global pop_init,errors_best,errors_worst
     pos_min = np.argmin(val_quote)
+    pos_max=np.argmax(val_quote)
     print('Best: ', end='')
     for i in pop_init[pos_min]:
         print(chr(int(i)), end='')
     print(f' | Erro: {val_quote[pos_min]}')
-    errors.append(val_quote[pos_min])
+    errors_best.append(val_quote[pos_min])
+    errors_worst.append(val_quote[pos_max])
 
 if __name__=='__main__':
     init_pop()
@@ -111,10 +114,12 @@ if __name__=='__main__':
         elitismo(val_quote,best)
         mutacao(0.1)
         ger+=1
-    plt.plot(errors, marker='o', linestyle='-', color='blue')
 
+    plt.plot(errors_best,color='green',label='MELHOR')
+    plt.plot(errors_worst,color='red',label='PIOR')
     plt.xlabel('Geração')
     plt.ylabel('Erro')
     plt.title('Erro por geração')
     plt.grid(True, linestyle='--', alpha=0.6)
+    plt.legend()
     plt.show()
