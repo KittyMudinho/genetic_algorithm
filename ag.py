@@ -4,9 +4,10 @@ import matplotlib.pyplot as plt
 
 errors_best=[]
 errors_worst=[]
+errors_med=[]
 QUOTE='GUSTAVO'
 TAM_CROMO=len(QUOTE)
-TAM_POP=TAM_CROMO*16
+TAM_POP=TAM_CROMO*8
 taxa_melhor=int(TAM_POP*0.10)
 
 pop_init=np.zeros((TAM_POP,TAM_CROMO))
@@ -98,6 +99,7 @@ def print_best(val_quote):
     print(f' | Erro: {val_quote[pos_min]}')
     errors_best.append(val_quote[pos_min])
     errors_worst.append(val_quote[pos_max])
+    errors_med.append(np.mean(val_quote))
 
 if __name__=='__main__':
     init_pop()
@@ -121,6 +123,7 @@ if __name__=='__main__':
         ger+=1
 
     plt.plot(errors_best,color='green',label='MELHOR')
+    plt.plot(errors_med,color='blue',label='MÉDIO')
     plt.plot(errors_worst,color='red',label='PIOR')
     plt.xlabel('Geração')
     plt.ylabel('Erro')
