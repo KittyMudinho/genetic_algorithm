@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 errors_best=[]
 errors_worst=[]
-QUOTE='GATO'
+QUOTE='GUSTAVO'
 TAM_CROMO=len(QUOTE)
 TAM_POP=TAM_CROMO*16
 taxa_melhor=int(TAM_POP*0.10)
@@ -68,13 +68,18 @@ def elitismo(val_quote,best):
     global pop_init,taxa_melhor
     piores=np.argsort(val_quote)[len(val_quote)-taxa_melhor:len(val_quote)]
     pos=0
+    idx_eli=[]
     for i in range(len(pop_init)):
         if i in piores:
             pop_init[i]=best[pos]
+            idx_eli.append(i)
+            pos+=1
+    return idx_eli
 
-def mutacao(taxa=0.03):
+def mutacao(idx_eli,taxa=0.03):
     global pop_init, TAM_POP, TAM_CROMO
     for i in range(TAM_POP):
+        if i in idx_eli:continue
         for j in range(TAM_CROMO):
             if np.random.random() < taxa:
                 pop_init[i][j] = np.random.randint(low=65, high=90)
@@ -111,8 +116,8 @@ if __name__=='__main__':
             latest_dads.append(dad2)
             cruza(dad1,dad2)
         val_quote=fitness()
-        elitismo(val_quote,best)
-        mutacao(0.1)
+        idx_eli=elitismo(val_quote,best)
+        mutacao(idx_eli)
         ger+=1
 
     plt.plot(errors_best,color='green',label='MELHOR')
