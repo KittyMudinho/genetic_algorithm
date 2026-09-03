@@ -24,19 +24,13 @@ def cruza(dad1,dad2):
     son1=[0]*TAM_CROMO
     son2=[0]*TAM_CROMO
     random_pos=random.sample(range(1,TAM_CROMO),1)[0]
-    for i in range(random_pos,TAM_CROMO):
-        son1[i]=dad1[i]
-        son2[i]=dad2[i]
-    pos=0
-    for i in dad2:
-        if pos not in range(random_pos,TAM_CROMO):
-            son1[pos]=i
-            pos+=1
-    pos=0
-    for i in dad1:
-        if pos not in range(random_pos,TAM_CROMO):
-            son2[pos]=i
-            pos+=1
+    for i in range(TAM_CROMO):
+        if i in range(random_pos,TAM_CROMO):
+            son1[i]=dad1[i]
+            son2[i]=dad2[i]
+        else:
+            son1[i]=dad2[i]
+            son2[i]=dad1[i]
     pop_init[pos_dad1]=son1
     pop_init[pos_dad2]=son2
 
